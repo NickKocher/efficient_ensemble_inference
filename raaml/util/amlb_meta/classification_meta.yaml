@@ -1,0 +1,710 @@
+2073:
+  entropy: 2.4904176362327273
+  imbalance: 92.6
+  n_cat: 0
+  n_classes: 10
+  n_features: 8
+  n_num: 8
+  n_samples: 1484
+  n_text: 0
+  task_id: 2073
+3945:
+  entropy: 0.12890327699101445
+  imbalance: 55.17977528089887
+  n_cat: 38
+  n_classes: 2
+  n_features: 230
+  n_num: 192
+  n_samples: 50000
+  n_text: 0
+  task_id: 3945
+7593:
+  entropy: 1.7386791173104532
+  imbalance: 103.13105205678923
+  n_cat: 44
+  n_classes: 7
+  n_features: 54
+  n_num: 10
+  n_samples: 581012
+  n_text: 0
+  task_id: 7593
+10090:
+  entropy: 5.643856189774725
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 50
+  n_features: 10000
+  n_num: 10000
+  n_samples: 1500
+  n_text: 0
+  task_id: 10090
+146818:
+  entropy: 0.9912308989033521
+  imbalance: 1.247557003257329
+  n_cat: 8
+  n_classes: 2
+  n_features: 14
+  n_num: 6
+  n_samples: 690
+  n_text: 0
+  task_id: 146818
+146820:
+  entropy: 0.3028903171988337
+  imbalance: 17.54022988505747
+  n_cat: 0
+  n_classes: 2
+  n_features: 5
+  n_num: 5
+  n_samples: 4839
+  n_text: 0
+  task_id: 146820
+167120:
+  entropy: 0.9999228673926668
+  imbalance: 1.0208971507700055
+  n_cat: 0
+  n_classes: 2
+  n_features: 21
+  n_num: 21
+  n_samples: 96320
+  n_text: 0
+  task_id: 167120
+168350:
+  entropy: 0.8731822577241405
+  imbalance: 2.407313997477932
+  n_cat: 0
+  n_classes: 2
+  n_features: 5
+  n_num: 5
+  n_samples: 5404
+  n_text: 0
+  task_id: 168350
+168757:
+  entropy: 0.8812908992306927
+  imbalance: 2.3333333333333335
+  n_cat: 13
+  n_classes: 2
+  n_features: 20
+  n_num: 7
+  n_samples: 1000
+  n_text: 0
+  task_id: 168757
+168784:
+  entropy: 2.410690442272441
+  imbalance: 12.236363636363636
+  n_cat: 0
+  n_classes: 7
+  n_features: 27
+  n_num: 27
+  n_samples: 1941
+  n_text: 0
+  task_id: 168784
+168868:
+  entropy: 0.13058991607500178
+  imbalance: 54.27272727272727
+  n_cat: 0
+  n_classes: 2
+  n_features: 170
+  n_num: 170
+  n_samples: 76000
+  n_text: 0
+  task_id: 168868
+168909:
+  entropy: 2.3214836340926372
+  imbalance: 1.0710925248301097
+  n_cat: 0
+  n_classes: 5
+  n_features: 2000
+  n_num: 2000
+  n_samples: 10000
+  n_text: 0
+  task_id: 168909
+168910:
+  entropy: 2.704628358293916
+  imbalance: 3.8386454183266934
+  n_cat: 0
+  n_classes: 7
+  n_features: 800
+  n_num: 800
+  n_samples: 8237
+  n_text: 0
+  task_id: 168910
+168911:
+  entropy: 1.0
+  imbalance: 1.0
+  n_cat: 136
+  n_classes: 2
+  n_features: 144
+  n_num: 8
+  n_samples: 2984
+  n_text: 0
+  task_id: 168911
+189354:
+  entropy: 0.9913943866651785
+  imbalance: 1.2449597109845836
+  n_cat: 4
+  n_classes: 2
+  n_features: 7
+  n_num: 3
+  n_samples: 539383
+  n_text: 0
+  task_id: 189354
+189355:
+  entropy: 8.450427915320661
+  imbalance: 2.8120728929384966
+  n_cat: 0
+  n_classes: 355
+  n_features: 60
+  n_num: 60
+  n_samples: 416188
+  n_text: 0
+  task_id: 189355
+189356:
+  entropy: 1.0
+  imbalance: 1.0
+  n_cat: 52
+  n_classes: 2
+  n_features: 78
+  n_num: 26
+  n_samples: 425240
+  n_text: 0
+  task_id: 189356
+189922:
+  entropy: 0.9997961696759701
+  imbalance: 1.0341935483870968
+  n_cat: 0
+  n_classes: 2
+  n_features: 970
+  n_num: 970
+  n_samples: 3153
+  n_text: 0
+  task_id: 189922
+190137:
+  entropy: 0.3397904253160801
+  imbalance: 14.8375
+  n_cat: 0
+  n_classes: 2
+  n_features: 72
+  n_num: 72
+  n_samples: 2534
+  n_text: 0
+  task_id: 190137
+190146:
+  entropy: 1.999066765534363
+  imbalance: 1.0954773869346734
+  n_cat: 0
+  n_classes: 4
+  n_features: 18
+  n_num: 18
+  n_samples: 846
+  n_text: 0
+  task_id: 190146
+190392:
+  entropy: 0.9999762953997442
+  imbalance: 1.011531069827034
+  n_cat: 0
+  n_classes: 2
+  n_features: 259
+  n_num: 259
+  n_samples: 3140
+  n_text: 0
+  task_id: 190392
+190410:
+  entropy: 1.0
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 2
+  n_features: 308
+  n_num: 308
+  n_samples: 5832
+  n_text: 0
+  task_id: 190410
+190411:
+  entropy: 0.8083026548320319
+  imbalance: 3.0301263362487854
+  n_cat: 0
+  n_classes: 2
+  n_features: 48
+  n_num: 48
+  n_samples: 4147
+  n_text: 0
+  task_id: 190411
+190412:
+  entropy: 0.9895875212220556
+  imbalance: 1.2727272727272727
+  n_cat: 0
+  n_classes: 2
+  n_features: 10000
+  n_num: 10000
+  n_samples: 100
+  n_text: 0
+  task_id: 190412
+211979:
+  entropy: 1.599470411745189
+  imbalance: 22.834617664493184
+  n_cat: 0
+  n_classes: 4
+  n_features: 54
+  n_num: 54
+  n_samples: 83733
+  n_text: 0
+  task_id: 211979
+211986:
+  entropy: 1.363633031850671
+  imbalance: 4.830853218279475
+  n_cat: 36
+  n_classes: 3
+  n_features: 49
+  n_num: 13
+  n_samples: 101766
+  n_text: 0
+  task_id: 211986
+359953:
+  entropy: 4.199893218280201
+  imbalance: 5.454545454545454
+  n_cat: 0
+  n_classes: 20
+  n_features: 1300
+  n_num: 1300
+  n_samples: 571
+  n_text: 0
+  task_id: 359953
+359954:
+  entropy: 2.262083620428274
+  imbalance: 2.038095238095238
+  n_cat: 5
+  n_classes: 5
+  n_features: 19
+  n_num: 14
+  n_samples: 736
+  n_text: 0
+  task_id: 359954
+359955:
+  entropy: 0.7916446298452327
+  imbalance: 3.202247191011236
+  n_cat: 0
+  n_classes: 2
+  n_features: 4
+  n_num: 4
+  n_samples: 748
+  n_text: 0
+  task_id: 359955
+359956:
+  entropy: 0.9223486063040569
+  imbalance: 1.9634831460674158
+  n_cat: 0
+  n_classes: 2
+  n_features: 41
+  n_num: 41
+  n_samples: 1055
+  n_text: 0
+  task_id: 359956
+359957:
+  entropy: 3.169925001442312
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 9
+  n_features: 856
+  n_num: 856
+  n_samples: 1080
+  n_text: 0
+  task_id: 359957
+359958:
+  entropy: 0.5353247216329435
+  imbalance: 7.191011235955056
+  n_cat: 0
+  n_classes: 2
+  n_features: 37
+  n_num: 37
+  n_samples: 1458
+  n_text: 0
+  task_id: 359958
+359959:
+  entropy: 1.5390345832497476
+  imbalance: 1.8888888888888888
+  n_cat: 7
+  n_classes: 3
+  n_features: 9
+  n_num: 2
+  n_samples: 1473
+  n_text: 0
+  task_id: 359959
+359960:
+  entropy: 1.205740970012175
+  imbalance: 18.615384615384617
+  n_cat: 6
+  n_classes: 4
+  n_features: 6
+  n_num: 0
+  n_samples: 1728
+  n_text: 0
+  task_id: 359960
+359961:
+  entropy: 3.321928094887362
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 10
+  n_features: 216
+  n_num: 216
+  n_samples: 2000
+  n_text: 0
+  task_id: 359961
+359962:
+  entropy: 0.6211733422333798
+  imbalance: 5.469325153374233
+  n_cat: 0
+  n_classes: 2
+  n_features: 21
+  n_num: 21
+  n_samples: 2109
+  n_text: 0
+  task_id: 359962
+359963:
+  entropy: 2.807354922057604
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 7
+  n_features: 16
+  n_num: 19
+  n_samples: 2310
+  n_text: 0
+  task_id: 359963
+359964:
+  entropy: 1.4797951605545787
+  imbalance: 2.1620915032679737
+  n_cat: 180
+  n_classes: 3
+  n_features: 180
+  n_num: 0
+  n_samples: 3186
+  n_text: 0
+  task_id: 359964
+359965:
+  entropy: 0.9985755386554581
+  imbalance: 1.0929927963326784
+  n_cat: 36
+  n_classes: 2
+  n_features: 36
+  n_num: 0
+  n_samples: 3196
+  n_text: 0
+  task_id: 359965
+359966:
+  entropy: 0.5841908881393563
+  imbalance: 6.143790849673203
+  n_cat: 1555
+  n_classes: 2
+  n_features: 1558
+  n_num: 3
+  n_samples: 3279
+  n_text: 0
+  task_id: 359966
+359967:
+  entropy: 0.994841931879593
+  imbalance: 1.1846243447874198
+  n_cat: 0
+  n_classes: 2
+  n_features: 1776
+  n_num: 1776
+  n_samples: 3751
+  n_text: 0
+  task_id: 359967
+359968:
+  entropy: 0.5878935751446988
+  imbalance: 6.072135785007072
+  n_cat: 4
+  n_classes: 2
+  n_features: 20
+  n_num: 16
+  n_samples: 5000
+  n_text: 0
+  task_id: 359968
+359969:
+  entropy: 2.3000070580673455
+  imbalance: 5.255144032921811
+  n_cat: 0
+  n_classes: 6
+  n_features: 51
+  n_num: 51
+  n_samples: 6118
+  n_text: 0
+  task_id: 359969
+359970:
+  entropy: 2.193423736133549
+  imbalance: 2.9559118236472948
+  n_cat: 0
+  n_classes: 5
+  n_features: 32
+  n_num: 32
+  n_samples: 9873
+  n_text: 0
+  task_id: 359970
+359971:
+  entropy: 0.99062392274143
+  imbalance: 1.2570436913025724
+  n_cat: 30
+  n_classes: 2
+  n_features: 30
+  n_num: 0
+  n_samples: 11055
+  n_text: 0
+  task_id: 359971
+359972:
+  entropy: 1.0
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 2
+  n_features: 20
+  n_num: 20
+  n_samples: 5124
+  n_text: 0
+  task_id: 359972
+359973:
+  entropy: 1.0
+  imbalance: 1.0
+  n_cat: 37
+  n_classes: 2
+  n_features: 1636
+  n_num: 1599
+  n_samples: 5418
+  n_text: 0
+  task_id: 359973
+359974:
+  entropy: 1.8617149332355558
+  imbalance: 439.6
+  n_cat: 0
+  n_classes: 7
+  n_features: 11
+  n_num: 11
+  n_samples: 4898
+  n_text: 0
+  task_id: 359974
+359975:
+  entropy: 0.11058084476988708
+  imbalance: 67.0
+  n_cat: 0
+  n_classes: 2
+  n_features: 36
+  n_num: 36
+  n_samples: 5100
+  n_text: 0
+  task_id: 359975
+359976:
+  entropy: 3.321928094887362
+  imbalance: 1.0
+  n_cat: 0
+  n_classes: 10
+  n_features: 784
+  n_num: 784
+  n_samples: 70000
+  n_text: 0
+  task_id: 359976
+359977:
+  entropy: 1.2184443563726473
+  imbalance: 6.896107923709102
+  n_cat: 42
+  n_classes: 3
+  n_features: 42
+  n_num: 0
+  n_samples: 67557
+  n_text: 0
+  task_id: 359977
+359979:
+  entropy: 0.3190117478024129
+  imbalance: 16.274117026884554
+  n_cat: 9
+  n_classes: 2
+  n_features: 9
+  n_num: 0
+  n_samples: 32769
+  n_text: 0
+  task_id: 359979
+359980:
+  entropy: 0.8629999927875764
+  imbalance: 2.5011174319382365
+  n_cat: 29
+  n_classes: 2
+  n_features: 118
+  n_num: 89
+  n_samples: 34465
+  n_text: 0
+  task_id: 359980
+359981:
+  entropy: 1.3491090889091475
+  imbalance: 5.3199538638985
+  n_cat: 0
+  n_classes: 3
+  n_features: 6
+  n_num: 6
+  n_samples: 44819
+  n_text: 0
+  task_id: 359981
+359982:
+  entropy: 0.5206312212538164
+  imbalance: 7.548118737001324
+  n_cat: 9
+  n_classes: 2
+  n_features: 16
+  n_num: 7
+  n_samples: 45211
+  n_text: 0
+  task_id: 359982
+359983:
+  entropy: 0.7938438393644256
+  imbalance: 3.179173440574998
+  n_cat: 8
+  n_classes: 2
+  n_features: 14
+  n_num: 6
+  n_samples: 48842
+  n_text: 0
+  task_id: 359983
+359984:
+  entropy: 5.977668312442416
+  imbalance: 36.08108108108108
+  n_cat: 0
+  n_classes: 100
+  n_features: 27
+  n_num: 27
+  n_samples: 65196
+  n_text: 0
+  task_id: 359984
+359985:
+  entropy: 2.961279665138157
+  imbalance: 9.409257898603968
+  n_cat: 0
+  n_classes: 10
+  n_features: 180
+  n_num: 180
+  n_samples: 58310
+  n_text: 0
+  task_id: 359985
+359986:
+  entropy: 3.321431258066602
+  imbalance: 1.0887265135699373
+  n_cat: 0
+  n_classes: 10
+  n_features: 7200
+  n_num: 7200
+  n_samples: 10000
+  n_text: 0
+  task_id: 359986
+359987:
+  entropy: 0.9603013611073694
+  imbalance: 4558.6
+  n_cat: 0
+  n_classes: 7
+  n_features: 9
+  n_num: 9
+  n_samples: 58000
+  n_text: 0
+  task_id: 359987
+359988:
+  entropy: 0.9710382712062633
+  imbalance: 1.4990628514307134
+  n_cat: 0
+  n_classes: 2
+  n_features: 4296
+  n_num: 4296
+  n_samples: 20000
+  n_text: 0
+  task_id: 359988
+359989:
+  entropy: 0.8112781244591328
+  imbalance: 3.0
+  n_cat: 0
+  n_classes: 2
+  n_features: 4296
+  n_num: 4296
+  n_samples: 20000
+  n_text: 0
+  task_id: 359989
+359990:
+  entropy: 0.856298827009695
+  imbalance: 2.563494890270966
+  n_cat: 0
+  n_classes: 2
+  n_features: 50
+  n_num: 50
+  n_samples: 130064
+  n_text: 0
+  task_id: 359990
+359991:
+  entropy: 0.5378879336854765
+  imbalance: 7.130904634581105
+  n_cat: 18
+  n_classes: 2
+  n_features: 32
+  n_num: 14
+  n_samples: 72983
+  n_text: 0
+  task_id: 359991
+359992:
+  entropy: 0.6540751823932877
+  imbalance: 4.937574316290131
+  n_cat: 6
+  n_classes: 2
+  n_features: 11
+  n_num: 5
+  n_samples: 39948
+  n_text: 0
+  task_id: 359992
+359993:
+  entropy: 1.1236390963644232
+  imbalance: 7.445718967636215
+  n_cat: 17
+  n_classes: 3
+  n_features: 19
+  n_num: 2
+  n_samples: 50789
+  n_text: 0
+  task_id: 359993
+359994:
+  entropy: 0.5339067946861282
+  imbalance: 7.22453298876054
+  n_cat: 5
+  n_classes: 2
+  n_features: 8
+  n_num: 4
+  n_samples: 2215023
+  n_text: 0
+  task_id: 359994
+360112:
+  entropy: 1.487347298266038
+  imbalance: 1403943.0
+  n_cat: 9
+  n_classes: 23
+  n_features: 41
+  n_num: 32
+  n_samples: 4898431
+  n_text: 0
+  task_id: 360112
+360113:
+  entropy: 0.2257600794303692
+  imbalance: 26.43671061122891
+  n_cat: 31
+  n_classes: 2
+  n_features: 57
+  n_num: 26
+  n_samples: 595212
+  n_text: 0
+  task_id: 360113
+360114:
+  entropy: 0.9974154365628732
+  imbalance: 1.1272974812797822
+  n_cat: 0
+  n_classes: 2
+  n_features: 28
+  n_num: 28
+  n_samples: 1000000
+  n_text: 0
+  task_id: 360114
+360975:
+  entropy: 0.3793628969692055
+  imbalance: 12.579576317218903
+  n_cat: 189
+  n_classes: 2
+  n_features: 14891
+  n_num: 14702
+  n_samples: 50000
+  n_text: 0
+  task_id: 360975

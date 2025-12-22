@@ -1,0 +1,85 @@
+from typing import Dict, Optional, Tuple, Union
+
+import numpy as np
+from ConfigSpace.configuration_space import ConfigurationSpace
+from ConfigSpace.hyperparameters import UniformFloatHyperparameter
+
+import auto_sklearn_search_space.pipeline.implementations.MinorityCoalescer
+from auto_sklearn_search_space.askl_typing import FEAT_TYPE_TYPE
+from auto_sklearn_search_space.pipeline.base import DATASET_PROPERTIES_TYPE, PIPELINE_DATA_DTYPE
+from auto_sklearn_search_space.pipeline.components.base import AutoSklearnPreprocessingAlgorithm
+from auto_sklearn_search_space.pipeline.constants import DENSE, INPUT, SPARSE, UNSIGNED_DATA
+from frequency.freq_api import SetFreq, get_overall_min_freq, get_overall_max_freq
+
+
+class MinorityCoalescer(AutoSklearnPreprocessingAlgorithm):
+    """Group categories whose occurence is less than a specified minimum fraction."""
+
+    def __init__(
+        self,
+        feat_type: Optional[FEAT_TYPE_TYPE] = None,
+        minimum_fraction: float = 0.01,
+        frequency: float = get_overall_max_freq(),
+        random_state: Optional[Union[int, np.random.RandomState]] = None,
+    ) -> None:
+        self.minimum_fraction = minimum_fraction
+        self.frequency = frequency
+
+    def fit(
+        self, X: PIPELINE_DATA_DTYPE, y: Optional[PIPELINE_DATA_DTYPE] = None
+    ) -> "MinorityCoalescer":
+        self.minimum_fraction = float(self.minimum_fraction)
+
+        self.preprocessor = (
+            auto_sklearn_search_space.pipeline.implementations.MinorityCoalescer.MinorityCoalescer(
+                minimum_fraction=self.minimum_fraction
+            )
+        )
+        self.preprocessor.fit(X, y)
+        return self
+
+    def transform(self, X: PIPELINE_DATA_DTYPE) -> PIPELINE_DATA_DTYPE:
+        if self.preprocessor is None:
+            raise NotImplementedError()
+        with SetFreq(self.frequency):
+            return self.preprocessor.transform(X)
+
+    @staticmethod
+    def get_properties(
+        dataset_properties: Optional[DATASET_PROPERTIES_TYPE] = None,
+    ) -> Dict[str, Optional[Union[str, int, bool, Tuple]]]:
+        return {
+            "shortname": "coalescer",
+            "name": "Categorical minority coalescer",
+            "handles_regression": True,
+            "handles_classification": True,
+            "handles_multiclass": True,
+            "handles_multilabel": True,
+            "handles_multioutput": True,
+            # TODO find out of this is right!
+            "handles_sparse": True,
+            "handles_dense": True,
+            "input": (DENSE, SPARSE, UNSIGNED_DATA),
+            "output": (INPUT,),
+        }
+
+    @staticmethod
+    def get_hyperparameter_search_space(
+        feat_type: Optional[FEAT_TYPE_TYPE] = None,
+        dataset_properties: Optional[DATASET_PROPERTIES_TYPE] = None,
+    ) -> ConfigurationSpace:
+        cs = ConfigurationSpace()
+        minimum_fraction = UniformFloatHyperparameter(
+            "minimum_fraction", lower=0.0001, upper=0.5, default_value=0.01, log=True
+        )
+        
+        frequency = UniformFloatHyperparameter(
+            name="frequency",
+            lower=get_overall_min_freq(),
+            upper=get_overall_max_freq(),
+            default_value=get_overall_max_freq(),
+            log=False,
+        )
+        
+        cs.add_hyperparameters([minimum_fraction, frequency])
+        return cs

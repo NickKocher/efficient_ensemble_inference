@@ -1,0 +1,297 @@
+167210:
+  mean_target: 715.0819805194806
+  n_cat: 6
+  n_features: 14
+  n_num: 8
+  n_samples: 1232
+  n_text: 0
+  std_target: 91.4971378445243
+  task_id: 167210
+233211:
+  mean_target: 3932.799721913237
+  n_cat: 3
+  n_features: 9
+  n_num: 6
+  n_samples: 53940
+  n_text: 0
+  std_target: 3989.4027576288736
+  task_id: 233211
+233212:
+  mean_target: 3037.3376856699833
+  n_cat: 116
+  n_features: 130
+  n_num: 15
+  n_samples: 188318
+  n_text: 0
+  std_target: 2904.0784757890747
+  task_id: 233212
+233213:
+  mean_target: 191.27949335619374
+  n_cat: 0
+  n_features: 77
+  n_num: 77
+  n_samples: 583250
+  n_text: 0
+  std_target: 612.351829000038
+  task_id: 233213
+233214:
+  mean_target: 5944923.322036331
+  n_cat: 0
+  n_features: 4991
+  n_num: 4991
+  n_samples: 4459
+  n_text: 1
+  std_target: 8233388.113737588
+  task_id: 233214
+233215:
+  mean_target: 100.66931812782134
+  n_cat: 8
+  n_features: 376
+  n_num: 369
+  n_samples: 4209
+  n_text: 0
+  std_target: 12.6778749695168
+  task_id: 233215
+317614:
+  mean_target: 1998.38688
+  n_cat: 0
+  n_features: 100
+  n_num: 100
+  n_samples: 400000
+  n_text: 0
+  std_target: 10.931303164106286
+  task_id: 317614
+359929:
+  mean_target: 8.2279407
+  n_cat: 3
+  n_features: 9
+  n_num: 6
+  n_samples: 10000000
+  n_text: 0
+  std_target: 29.450338210915064
+  task_id: 359929
+359930:
+  mean_target: 5.977180899908173
+  n_cat: 0
+  n_features: 3
+  n_num: 3
+  n_samples: 2178
+  n_text: 0
+  std_target: 0.1893828975271373
+  task_id: 359930
+359931:
+  mean_target: 15.074652777777779
+  n_cat: 11
+  n_features: 11
+  n_num: 0
+  n_samples: 576
+  n_text: 0
+  std_target: 0.8221013160682648
+  task_id: 359931
+359932:
+  mean_target: 18.21280276816609
+  n_cat: 4
+  n_features: 5
+  n_num: 1
+  n_samples: 1156
+  n_text: 0
+  std_target: 40.98590599301626
+  task_id: 359932
+359933:
+  mean_target: -0.5762341333450276
+  n_cat: 0
+  n_features: 6
+  n_num: 6
+  n_samples: 3107
+  n_text: 0
+  std_target: 0.198024017676591
+  task_id: 359933
+359934:
+  mean_target: 18.502083333333335
+  n_cat: 0
+  n_features: 124
+  n_num: 124
+  n_samples: 240
+  n_text: 0
+  std_target: 14.332551871865743
+  task_id: 359934
+359935:
+  mean_target: 5.818377712790519
+  n_cat: 0
+  n_features: 11
+  n_num: 11
+  n_samples: 6497
+  n_text: 0
+  std_target: 0.8731880644450568
+  task_id: 359935
+359936:
+  mean_target: 0.021624977408277613
+  n_cat: 0
+  n_features: 18
+  n_num: 18
+  n_samples: 16599
+  n_text: 0
+  std_target: 0.006716871406364694
+  task_id: 359936
+359937:
+  mean_target: 11658.114979528957
+  n_cat: 4
+  n_features: 9
+  n_num: 5
+  n_samples: 166821
+  n_text: 0
+  std_target: 5082.272726265099
+  task_id: 359937
+359938:
+  mean_target: 5490.4869996258885
+  n_cat: 4
+  n_features: 12
+  n_num: 8
+  n_samples: 10692
+  n_text: 0
+  std_target: 16483.95500366266
+  task_id: 359938
+359939:
+  mean_target: 0.919426170512099
+  n_cat: 0
+  n_features: 266
+  n_num: 266
+  n_samples: 8885
+  n_text: 0
+  std_target: 0.02975111461720718
+  task_id: 359939
+359940:
+  mean_target: 0.919426170512099
+  n_cat: 0
+  n_features: 251
+  n_num: 251
+  n_samples: 8885
+  n_text: 0
+  std_target: 0.02975111461720718
+  task_id: 359940
+359941:
+  mean_target: 3395.3801836343455
+  n_cat: 1
+  n_features: 59
+  n_num: 59
+  n_samples: 39644
+  n_text: 0
+  std_target: 11626.804105728816
+  task_id: 359941
+359942:
+  mean_target: 0.5285526829958941
+  n_cat: 12
+  n_features: 44
+  n_num: 33
+  n_samples: 7063
+  n_text: 2
+  std_target: 0.22493602689474687
+  task_id: 359942
+359943:
+  mean_target: 2.374750470494211
+  n_cat: 9
+  n_features: 18
+  n_num: 9
+  n_samples: 581835
+  n_text: 0
+  std_target: 2.713709944571671
+  task_id: 359943
+359944:
+  mean_target: 9.933684462532918
+  n_cat: 1
+  n_features: 8
+  n_num: 7
+  n_samples: 4177
+  n_text: 0
+  std_target: 3.2237830658212117
+  task_id: 359944
+359945:
+  mean_target: 0.2379789368104313
+  n_cat: 0
+  n_features: 126
+  n_num: 126
+  n_samples: 1994
+  n_text: 1
+  std_target: 0.23292647291156512
+  task_id: 359945
+359946:
+  mean_target: 28.945333333333334
+  n_cat: 0
+  n_features: 48
+  n_num: 48
+  n_samples: 15000
+  n_text: 0
+  std_target: 41.72442543909049
+  task_id: 359946
+359948:
+  mean_target: 3338.563941295721
+  n_cat: 1
+  n_features: 116
+  n_num: 115
+  n_samples: 4440
+  n_text: 1
+  std_target: 2255.902559071063
+  task_id: 359948
+359949:
+  mean_target: 540088.1417665294
+  n_cat: 1
+  n_features: 21
+  n_num: 21
+  n_samples: 21613
+  n_text: 0
+  std_target: 367118.7031813723
+  task_id: 359949
+359950:
+  mean_target: 22.532806324110677
+  n_cat: 2
+  n_features: 13
+  n_num: 11
+  n_samples: 506
+  n_text: 0
+  std_target: 9.188011545278203
+  task_id: 359950
+359951:
+  mean_target: 180921.19589041095
+  n_cat: 43
+  n_features: 79
+  n_num: 37
+  n_samples: 1460
+  n_text: 0
+  std_target: 79415.29188606751
+  task_id: 359951
+359952:
+  mean_target: 50074.43978230337
+  n_cat: 0
+  n_features: 16
+  n_num: 16
+  n_samples: 22784
+  n_text: 0
+  std_target: 52842.31587657862
+  task_id: 359952
+360932:
+  mean_target: 6.237024208345882
+  n_cat: 1
+  n_features: 1024
+  n_num: 1024
+  n_samples: 5742
+  n_text: 0
+  std_target: 1.5475251919554072
+  task_id: 360932
+360933:
+  mean_target: 6.3182908278804994
+  n_cat: 1
+  n_features: 1024
+  n_num: 1024
+  n_samples: 5766
+  n_text: 0
+  std_target: 1.2596225676532955
+  task_id: 360933
+360945:
+  mean_target: 14843.41822274312
+  n_cat: 2
+  n_features: 144
+  n_num: 144
+  n_samples: 1090
+  n_text: 1
+  std_target: 28630.62801169931
+  task_id: 360945

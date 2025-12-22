@@ -1,0 +1,15 @@
+tests
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+slurm.sh
+slurm_outputs
+slurm_scripts/
+bash_scripts/
+raaml_output
+raaml_output_gbmlp
+ensemble_pool_results
+progress/
+.vscode
+.cache
