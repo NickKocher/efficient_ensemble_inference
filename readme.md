@@ -33,7 +33,7 @@ The repository is structured as follows.
 - **./analysis/** contains code to 
     - extract results from the conducted experiments into a few files (./analysis/collect_scripts/)
     - analyse the extracted results and re-create the figures used in the paper (./analysis/notebooks/).
-- **./experiments/** contains the code to run the experiments conducted within the master thesis. In particular,
+- **./experiments/** contains the code to run the experiments. In particular,
     - analysis_gbmlp.py was used to generate the data for the consistency analysis visualised in Figure 2.
     - run_bmg.py runs the base model generation including refits for ensembling evaluations and final evaluations.
     - run_create_preds.py runs the creation of predictions for ensembling predictions on all hardware-level setups
@@ -41,7 +41,7 @@ The repository is structured as follows.
     - run_ensembling.py runs all ensembling and allotment experiments based on prior base model generation
 - **./phem/** contains code adapted from [Purucker et al.](https://github.com/Atraxus/phem/tree/804fc55c5f98f1d52e7d437c37f989ff734cfbbc) that comprises important utility features and algorithmic implementations for ensembling.
 - **./raaml/** contains the actual framework. This directory is further divided into 
-    - ./raaml/base_model_generation/ comprises implementations and utility for the base model generation methods used within this thesis
+    - ./raaml/base_model_generation/ comprises implementations and utility for the base model generation method
     - ./raaml/config_spaces/ contains the code to create the configuration space based on XGBoost, RealMLP, TabM
     - ./raaml/ensembling/ comprises code related to ensemble selection, scheduling and allotment and base model pruning
     - ./raaml/util/ provides various utility implementations used within the framework
