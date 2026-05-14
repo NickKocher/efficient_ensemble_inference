@@ -23,23 +23,22 @@ results demonstrate that intelligent parallel resource allocation can substantia
 the efficiency of resource-aware AutoML systems.
 
 --- 
+### Installation
 
+### Example Usage
 ### Repository Structure
 
 The repository is structured as follows. 
 
 - **./analysis/** contains code to 
     - extract results from the conducted experiments into a few files (./analysis/collect_scripts/)
-    - analyse the extracted results and re-create the figures used in the paper (./analysis/notebooks/)
-- **./auto_sklearn_search_space/** and **./auto_sklearn_search_space_no_freq/** contain code for the AutoSklearn Search Space (with and without frequency scaling hyperparameters respectively). This code was not used for final experiments. Thus, full out-of-the-box compatability with the AutoML framework may not be guaranteed.
+    - analyse the extracted results and re-create the figures used in the paper (./analysis/notebooks/).
 - **./experiments/** contains the code to run the experiments conducted within the master thesis. In particular,
-    - analysis_gbmlp.py was used to generate the data for the frequency scaling analysis on the Intel Xeon Platinum 8480+
-    - collect_ens_preds.py was used to extract ensembling predictions of base models and ensembles in order to restrict the evaluation on the test data to the corresponding pareto fronts of the solution pools using the ensembling data, thereby accounting for overfitting
+    - analysis_gbmlp.py was used to generate the data for the consistency analysis visualised in Figure 2.
     - run_bmg.py runs the base model generation including refits for ensembling evaluations and final evaluations.
-    - run_create_preds.py runs the creation of predictions for ensembling predictions on all hardware-level setups (i.e. frequency scaling vs no frequency scaling and at different core counts)
+    - run_create_preds.py runs the creation of predictions for ensembling predictions on all hardware-level setups
+    - collect_ens_preds.py was used to extract ensembling predictions of base models and ensembles in order to restrict the evaluation on the test data to the corresponding pareto fronts of the solution pools using the ensembling data, thereby accounting for overfitting
     - run_ensembling.py runs all ensembling and allotment experiments based on prior base model generation
-- **./frequency/** contains code to set the frequency of the CPU correspondingly
-- **./mosmac3/** is adapted from the code for MO-SMAC based on the framework proposed by [Rook et al.](https://pubmed.ncbi.nlm.nih.gov/40096519/) and lays foundation for the multi-objective Bayesian optimisation used within the thesis.
 - **./phem/** contains code adapted from [Purucker et al.](https://github.com/Atraxus/phem/tree/804fc55c5f98f1d52e7d437c37f989ff734cfbbc) that comprises important utility features and algorithmic implementations for ensembling.
 - **./raaml/** contains the actual framework. This directory is further divided into 
     - ./raaml/base_model_generation/ comprises implementations and utility for the base model generation methods used within this thesis
@@ -50,7 +49,7 @@ The repository is structured as follows.
     - ./raaml/resource_provider.py provides the baseline for measuring resource consumptions on the used platforms
 
 ---
-
+### Data
 ### Used Software and Dependencies
 
 - Python 3.11.5 with GCCcore 13.2.0 was used for all experiments

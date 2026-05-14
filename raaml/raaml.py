@@ -17,12 +17,7 @@ import traceback
 import logging
 import warnings
 
-from phem.methods.ensemble_selection.qdo.behavior_space import BehaviorSpace, BehaviorFunction
-from phem.methods.ensemble_selection.qdo.behavior_spaces import (
-    get_bs_configspace_similarity_and_loss_correlation, get_bs_ensemble_size_and_loss_correlation
-)
 from mosmac3.smac.utils.configspace import get_config_hash
-from phem.methods.ensemble_selection.qdo.behavior_functions.basic import get_loss_correlation_behavior_fun
 from raaml.resource_provider import AssembledResourceProvider, ResourceProvider, DummyResourceProvider, InferenceTimeProvider, AMDEnergyProvider
 from raaml.config_spaces.gb_mlp_space import GBMLPPipelineFactory
 from raaml.base_model_generation.pd_base_model_pool import BaseModelPool, base_model_pool_from_smac_history, load_base_model_pool_from_dir
