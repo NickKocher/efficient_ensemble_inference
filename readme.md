@@ -1,12 +1,26 @@
-# Comparative Analysis of Algorithms and Hardware-Level Controls for Resource-Aware AutoML
+# Efficient Ensemble Inference
 
-This is the repository accompanying the code for the master thesis "Comparative Analysis of Algorithms and Hardware-Level Controls for Resource-Aware AutoML" by Janek Paeßens. 
+This is the repository accompanying the code for the AutoML submission "Efficient Ensemble Inference". 
 
 --- 
 
 ### Abstract
 
-Automated Machine Learning (AutoML) has become a powerful approach for automating the design and optimisation of machine learning models. As a result, AutoML-generated models are increasingly deployed in real-world applications, often consuming substantial computational resources. Despite this, most current AutoML systems continue to prioritise predictive accuracy as their primary optimisation target and rarely account for the resource footprint of the models they generate. Consequently, AutoML pipelines may produce models that perform well on standard metrics but are impractical for environments with strict running time or energy constraints. In this work, we evaluate and compare various components of AutoML pipelines and analyse how their interactions influence the creation of resource-efficient pools of models. In particular, we examine several single- and multi-objective base-model generation strategies based on hyperparameter optimisation and their interactions with resource-aware and resource-unaware ensembling strategies. We also introduce a novel method, MO-GES, for resource-aware ensembling and compare it against existing approaches demonstrating that MO-GES consistently performs best among all tested ensembling strategies with respect to the hypervolume indicator. Furthermore, we study the effect of hardware-level controls — such as dynamic voltage and frequency scaling and parallelisation — on model resource consumption and develop an allotment technique based on the Non-dominated Sorting Genetic Algorithm II to integrate these controls directly into the AutoML process. Our experiments on the AutoML Benchmark datasets show that the algorithmic and hardware-level controls yield complementary benefits and substantially improve the hypervolume of the pools of solutions discovered by our AutoML framework. Thereby, accuracy-efficiency trade-offs are comprehensively explored. This enables practitioners to systematically select models that align with their specific computational and resource constraints
+Ensembling improves predictive performance in AutoML systems but often leads to inefficient inference on CPUs,
+as most frameworks execute ensemble members sequentially while 
+allocating all available CPU cores to each model. Since inference scales poorly beyond a 
+few cores and ensemble members vary in running time, this wastes both time and energy. 
+We address this by framing ensemble inference as a moldable task scheduling problem, 
+where CPU core allocation and execution order for inference time and energy consumption 
+are jointly optimised. Building on a two-stage allotment and scheduling framework, we 
+introduce NSGA-P, a multi-objective allocation strategy based on NSGA-II as an analytical 
+tool to understand the benefits of efficient ensemble inference using offline resource measure- 
+ments. We evaluate our approach on 104 datasets from the AMLB benchmark suite. NSGA-P 
+outperforms the naïve maximum-cores baseline used by existing AutoML frameworks in 
+over 96% of ensembles. NSGA-P allotments halve inference time on 8 cores and achieve 
+up to a 74% reduction in both inference time and energy consumption on 64 cores. These 
+results demonstrate that intelligent parallel resource allocation can substantially improve 
+the efficiency of resource-aware AutoML systems.
 
 --- 
 
@@ -16,7 +30,7 @@ The repository is structured as follows.
 
 - **./analysis/** contains code to 
     - extract results from the conducted experiments into a few files (./analysis/collect_scripts/)
-    - analyse the extracted results and re-create the figures used in the thesis (./analysis/notebooks/)
+    - analyse the extracted results and re-create the figures used in the paper (./analysis/notebooks/)
 - **./auto_sklearn_search_space/** and **./auto_sklearn_search_space_no_freq/** contain code for the AutoSklearn Search Space (with and without frequency scaling hyperparameters respectively). This code was not used for final experiments. Thus, full out-of-the-box compatability with the AutoML framework may not be guaranteed.
 - **./experiments/** contains the code to run the experiments conducted within the master thesis. In particular,
     - analysis_gbmlp.py was used to generate the data for the frequency scaling analysis on the Intel Xeon Platinum 8480+

@@ -1,5 +1,4 @@
 import openml
-openml.config.set_root_cache_directory('/storage/work/paessens/.openml_cache')
 
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
