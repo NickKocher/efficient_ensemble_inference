@@ -826,20 +826,10 @@ class ResourceAwareAutoMLPipeline():
     def _run_base_model_gen(self):
         self.base_model_pool = None
 
-        if self.base_model_gen == "mo-bo":
-            self._run_MO_BO()
-        elif self.base_model_gen == "so-bo":
+        if self.base_model_gen == "so-bo":
             self._run_SO_BO()
-        elif self.base_model_gen == "nsga2":
-            self._run_NSGA_II()
-        elif self.base_model_gen == "so-asha":
-            self._run_ASHA(mo=False)
-        elif self.base_model_gen == "mo-asha":
-            self._run_ASHA(mo=True)
-        elif self.base_model_gen == "random":
-            self._run_random()
         else:
-            raise ValueError(f"Unknown base model generation strategy: {self.base_model_gen}. Choose from 'mo-bo' (Multi-objective Bayesian Optimization), 'so-bo' (Single-objective Bayesian Optimization), 'nsga2' (Non-dominated Sorting Genetic Algorithm II), 'so-asha' (Single-objective Asynchronous Successive Halving Algorithm), 'mo-asha' (Multi-objective Asynchronous Successive Halving Algorithm) and 'random' (Random search).")
+            raise ValueError(f"Unknown base model generation strategy: {self.base_model_gen}. ")
 
         self.base_model_pool.save(os.path.join(self.output_dir, self.identifier,"base_model_pool"))
 
@@ -1491,7 +1481,6 @@ class ResourceAwareAutoMLPipeline():
             logging_level=self.logging_level,
             initial_design=RandomInitialDesign(scenario, n_configs = self.bmg_kwargs.get("n_configs_initial", 5)), 
             callbacks=[CustomCallback(self.update_progress)],
-            # Use only 5 initial configs, as large datasets will only be able to fit few models
         )
 
         start = time_s()
@@ -1508,235 +1497,10 @@ class ResourceAwareAutoMLPipeline():
         )
 
 
-    def _run_MO_BO(self):
-        """
-        Run the Multi-objective Bayesian Optimization using SMAC.
-        """
-        
-        scenario = Scenario(
-            configspace = self.config_space,
-            name = self.identifier,
-            output_directory=os.path.join(self.output_dir, self.identifier, "smac_output"),
-            crash_cost = np.inf,
-            deterministic=True,
-            walltime_limit = self.time_search_s,
-            trial_walltime_limit = self.trial_walltime_limit_s,
-            trial_memory_limit = self.trial_memory_limit_mb * 1e6,
-            n_trials = self.bmg_kwargs.get("n_trials", np.inf),
-            seed=self.seed,
-            n_workers=self.n_jobs_optimization,
-            objectives = [self.metric.name] + list(self.resource_providers.keys()),
-        )   
-        
-        intensifier = NewIntensifier(
-            scenario = scenario,
-            max_config_calls=self.bmg_kwargs.get("max_config_calls", 2000),
-            max_incumbents=np.inf,
-            retries=self.bmg_kwargs.get("retries", 300),
-            seed=self.seed
-        )
-        
-        smac = MultiObjectiveFacade(
-            scenario, 
-            target_function=self._target_fun,
-            overwrite=self.overwrite,
-            intensifier=intensifier,
-            acquisition_function=PHVI(),
-            logging_level=self.logging_level,
-            initial_design=RandomInitialDesign(scenario, n_configs = self.bmg_kwargs.get("n_configs_initial", 5)),
-            # Use only 5 initial configs, as large datasets will not fit non-initial configs otherwise
-            callbacks=[CustomCallback(self.update_progress)],
-        )
-        
-        start = time_s()
-        
-        smac.optimize()
-
-        self.base_model_pool = base_model_pool_from_smac_history(
-            smac.runhistory,
-            multi_objective=True,
-            identifier=self.identifier,
-            cs=self.config_space,
-            objective_names=[self.metric.name] + list(self.resource_providers.keys()),
-            start_time=start
-        )
-
-
-    def _run_NSGA_II(self):
-        """
-        Run the Non-dominated Sorting Genetic Algorithm II (NSGA-II).
-        """
-        
-        nsgaii_problem = NSGAIIProblem(
-            self.config_space,
-            self.seed,
-            [self.metric.name] + list(self.resource_providers.keys()),
-            self._target_fun,
-            self.n_jobs_optimization,
-            self.trial_walltime_limit_s,
-            self.trial_memory_limit_mb,
-            self.update_progress
-        )
-        sampling = ConfigSpaceSampling()
-        crossover = ConfigSpaceCrossover(
-            max_attempts=self.bmg_kwargs.get("crossover_max_attempts", 30),
-            probability=self.bmg_kwargs.get("crossover_probability", 0.5)
-        )
-        mutation = ConfigSpaceMutation(
-            max_attempts=self.bmg_kwargs.get("mutation_max_attempts", 30),
-            probability=self.bmg_kwargs.get("mutation_probability", 0.5),
-            std=self.bmg_kwargs.get("mutation_std", 0.1),
-        )
-        
-        algorithm = NSGA2(
-            pop_size=self.bmg_kwargs.get("pop_size", 25),
-            sampling=sampling,
-            crossover=crossover,
-            mutation=mutation,
-            eliminate_duplicates=True,
-            seed=self.seed,
-        )
-
-        start = time_s()
-        nsgaii_problem.set_start_time(start, self.time_search_s)
-
-        res = minimize(
-            nsgaii_problem,
-            algorithm,
-            get_termination("time", self.time_search_s),
-            seed=self.seed,
-            verbose=False,
-            save_history=True
-        )
-
-        self.base_model_pool = NSGAIIProblem.get_base_model_pool(
-            res,
-            nsgaii_problem,
-            self.identifier,
-            start
-        )
-
-
-    def _run_ASHA(self, mo=True):
-        """
-        Run the Asynchronous Successive Halving Algorithm (ASHA).
-        """
-        
-        asha = ASHA(
-            config_space=self.config_space,
-            n_cores_search=self.n_jobs_optimization,
-            t_search_sec= self.time_search_s,
-            trial_search_sec=self.trial_walltime_limit_s,
-            trial_memory_mb=self.trial_memory_limit_mb,
-            seed=self.seed,
-            identifier=self.identifier,
-            path=self.output_dir,
-            cost_names=[self.metric.name] + list(self.resource_providers.keys()),
-            multi_objective=mo
-        )
-        
-        self.base_model_pool = asha.optimize(
-            eval_fn=self._target_fun_with_budget,
-            n_cv_steps=self.data_split.n_cv_steps,
-            eta=self.bmg_kwargs.get("eta", 3),
-            update_fun=self.update_progress
-        )
-        
     
-    def _run_random(self):
-        """
-        Run Random Search.
-        """
-        
-        
-        rs = RandomSearch(
-            config_space=self.config_space,
-            n_cores_search=self.n_jobs_optimization,
-            t_search_sec= self.time_search_s,
-            trial_search_sec=self.trial_walltime_limit_s,
-            trial_memory_mb=self.trial_memory_limit_mb,
-            seed=self.seed,
-            identifier=self.identifier,
-            path=self.output_dir,
-            cost_names=[self.metric.name] + list(self.resource_providers.keys()),
-        )
-        
-        self.base_model_pool = rs.run(
-            eval_fn=self._target_fun,
-            update_fun=self.update_progress
-        )
-        
             
 
-    def _init_behavior_space(self, ensembling_resources, scheduler, first="alc", second="css", abs_alc=True):
-        """
-        Initialize the behavior space for Quality Diversity Optimization.
-        """
-        
-        n_models = ensembling_resources.shape[0]
-        
-        if first == "alc" and second == "css":
-            self.behavior_space = get_bs_configspace_similarity_and_loss_correlation(self.task_type == "classification", abs_alc)
-        elif first == "alc" and second == "ensemble_size":
-            self.behavior_space = get_bs_ensemble_size_and_loss_correlation(self.task_type == "classification", n_models, abs_alc)
-        elif first == "alc" and second in ["energy_consumption", "inference_time"]:
-            
-            def get_resource_metric(metadata_list, metric):
-                inf_time, energy_consumption, _, _ = scheduler.compute_offline_resources(
-                    [md["task"] for md in metadata_list],
-                )
-                if metric == "energy_consumption":
-                    return energy_consumption
-                else:
-                    return inf_time
-                
-            resource_index = self.assembled_resource_provider.get_names().index(second)
-            
-            second_fct = BehaviorFunction(
-                #lambda input_metadata: sum(md[second] for md in input_metadata),
-                lambda input_metadata: get_resource_metric(input_metadata, second),
-                required_arguments=["input_metadata"],
-                range_tuple=(0, ensembling_resources[:, resource_index].sum()),
-                required_prediction_format="none",
-                name=second,
-            )
-            
-            self.behavior_space = BehaviorSpace([get_loss_correlation_behavior_fun(self.task_type == "classification", abs_alc), second_fct])
-        else:
-            raise ValueError(f"Unknown behavior space configuration: first={first}, second={second}. Choose from 'alc' (Average Loss Correlation) and 'css' (Config Space Similarity), 'ensemble_size' (Ensemble Size), 'energy_consumption', or 'inference_time'.")
-
-
-    def _run_qdo_ensemble_selection(self, ensembling_kwargs, do_allotment, second, scheduler):
-        """
-        Run the Quality Diversity Optimization Ensemble Selection.
-        """
-
-        _, _, ens_resources, _, _ = self.ensembling_predictions.get_ensembling_data(do_allotment)
-
-        self._init_behavior_space(ens_resources, scheduler, second=second, abs_alc=ensembling_kwargs.get("abs_alc", True))
-
-        n_iterations_default = 50 if second=="css" else 3
-
-        self.ensemble_pool = QDOEnsembleSelection(
-            n_base_models=ens_resources.shape[0],
-            n_iterations=ensembling_kwargs.get("n_iterations", n_iterations_default),
-            score_metric=self.metric,
-            batch_size=ensembling_kwargs.get("batch_size", 40),
-            max_elites=ensembling_kwargs.get("max_elites", 49),
-            archive_type=ensembling_kwargs.get("archive_type", "sliding"),
-            behavior_space=self.behavior_space,
-            n_jobs=self.n_jobs_optimization,
-            random_state=self.seed,
-            base_models_metadata_type= "custom" if second != "css" else "auto-sklearn-assembled-format",
-        ).ensemble_fit(
-            self.data_split.get_ensembling_labels(),
-            self.ensembling_predictions,
-            self.base_model_pool,
-            self.base_dir,
-            do_allotment,
-            scheduler
-        )
-        
+    
         
     def _run_default_ensembling(self, ensembling_kwargs, do_allotment, method, scheduler):
         """
@@ -1751,18 +1515,6 @@ class ResourceAwareAutoMLPipeline():
                 random_state=self.seed,
                 use_best=True
             )
-        elif method == "mo-ges":
-            strategy = MOGreedyEnsembleSelection(
-                n_iterations=ensembling_kwargs.get("n_iterations", 50),
-                metric=self.metric,
-                enable_reset=ensembling_kwargs.get("enable_reset", True),
-                restriction_mode=ensembling_kwargs.get("restriction_mode", "quadratic"),
-                filter_duplicates=ensembling_kwargs.get("filter_duplicates", True),
-                exp_factor=ensembling_kwargs.get("exp_factor", 4.0),
-                max_ensemble_size=ensembling_kwargs.get("max_ensemble_size", 20),
-                random_state=self.seed,
-            )
-        
         self.ensemble_pool = strategy.ensemble_fit(
             self.data_split.get_ensembling_labels(),
             self.ensembling_predictions,
