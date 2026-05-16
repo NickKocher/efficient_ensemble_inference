@@ -170,32 +170,33 @@ class InferenceTimeProvider(ContextManagerResourceProvider):
     def __exit__(self, exc_type, exc_value, traceback):
         self.resource_val = time.perf_counter() - self.time_start
 
+class AMDEnergyProvider(DummyResourceProvider):
+    pass
+# class AMDEnergyProvider(ContextManagerResourceProvider):
+#     def __init__(self, metric_name):
+        
+#         # try:
+#         #     self._read_energies()
+#         # except Exception as e:
+#         #     raise ValueError(f"Could not read energy from /sys/class/hwmon/hwmon3/energy_input: {e}. Make sure you have access to /sys/class/hwmon/hwmon3/energy<core_id>_input.")
+        
+#         super().__init__(metric_name, 0.0, np.inf)
+        
+#     def _read_energy(self, core):
+#         with open(f"/sys/class/hwmon/hwmon3/energy{core+1}_input", "r") as f:
+#             energy = float(f.read()) / 1e6
+#         return energy
 
-class AMDEnergyProvider(ContextManagerResourceProvider):
-    def __init__(self, metric_name):
+#     def _read_energies(self):
+#         cores = sorted(list(os.sched_getaffinity(0)))
+#         return np.array([self._read_energy(core) for core in cores])
         
-        # try:
-        #     self._read_energies()
-        # except Exception as e:
-        #     raise ValueError(f"Could not read energy from /sys/class/hwmon/hwmon3/energy_input: {e}. Make sure you have access to /sys/class/hwmon/hwmon3/energy<core_id>_input.")
+#     def __enter__(self):
+#         self.energy_start = self._read_energies()
         
-        super().__init__(metric_name, 0.0, np.inf)
-        
-    def _read_energy(self, core):
-        with open(f"/sys/class/hwmon/hwmon3/energy{core+1}_input", "r") as f:
-            energy = float(f.read()) / 1e6
-        return energy
-
-    def _read_energies(self):
-        cores = sorted(list(os.sched_getaffinity(0)))
-        return np.array([self._read_energy(core) for core in cores])
-        
-    def __enter__(self):
-        self.energy_start = self._read_energies()
-        
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.energy_end = self._read_energies()
-        self.resource_val = np.sum(self.energy_end - self.energy_start)
+#     def __exit__(self, exc_type, exc_value, traceback):
+#         self.energy_end = self._read_energies()
+#         self.resource_val = np.sum(self.energy_end - self.energy_start)
 
        
         

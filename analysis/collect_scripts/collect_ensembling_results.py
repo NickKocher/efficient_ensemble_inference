@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     for task in tqdm.tqdm(tasks):
         for seed in range(1,6):
-            for method in ["random", "so-smac", "mo-smac", "nsga2", "so-asha", "mo-asha"]:
+            for method in ["so-smac"]:
                 dir = os.path.join(base_folder, str(task), str(seed), method)
                 if os.path.exists(os.path.join(dir, "meta_results.yaml")):
                     subfiles = os.listdir(dir)
@@ -34,7 +34,7 @@ if __name__ == "__main__":
                     with open(os.path.join(dir, "meta_results.yaml"), "r") as f:
                         meta_results = yaml.safe_load(f)
 
-                    n_models_indicator = f"base_28_energy-qdo-es_nd_50_silo_time_{args.time}" if args.exp_type == "base_time" else "base_28_energy-qdo-es_nd_50_silo"
+                    n_models_indicator = f"base_28_ges_nd_50_silo_time_{args.time}" if args.exp_type == "base_time" else "base_28_ges_nd_50_silo"
                     more_than_50_models = n_models_indicator in meta_results
                     
                     for f in meta_results.keys():

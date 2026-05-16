@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     for task in tqdm.tqdm(tasks):
         for seed in range(1,6):
-            for method in ["random", "so-smac", "mo-smac", "nsga2", "so-asha", "mo-asha"]:
+            for method in ["so-smac"]:
                 dir = os.path.join(base_folder, str(task), str(seed), method)
                 if os.path.exists(os.path.join(dir, "meta_results.yaml")):
                     subfiles = os.listdir(dir)

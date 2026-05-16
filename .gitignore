@@ -5,8 +5,8 @@ __pycache__
 *.pyd
 slurm.sh
 slurm_outputs
-slurm_scripts/
 bash_scripts/
+slurm_scripts/
 raaml_output
 raaml_output_gbmlp
 ensemble_pool_results
