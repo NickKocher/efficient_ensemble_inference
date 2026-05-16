@@ -32,7 +32,7 @@ Install package using `pip install -e .`
 
 
 ### Example Usage
-We provide anonymised Slurm script in ./slurm_scripts to rerun all experiments in the paper.
+We provide anonymised Slurm scripts in ./slurm_scripts to rerun all experiments in the paper.
 
 Scripts are numbered according to the execution order of required.
 
