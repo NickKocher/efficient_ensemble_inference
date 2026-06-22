@@ -23,7 +23,6 @@ def get_resources(task_id):
     # 16GB: 87
     # 32GB: 6
     # 64GB: 11
-    
     mapping = {
         233213: 64,
         233214: 32,
@@ -43,7 +42,7 @@ def get_resources(task_id):
         360114: 64,
         360975: 64,
     }
-    
+   
     if task_id not in mapping:
         return 16, 1
     

@@ -8,7 +8,7 @@ from contextlib import contextmanager
 import yaml
 import traceback
 
-from raaml.ensembling.scheduling.allotment import NSGA2Allotment, FullFrequencyScalingAllotment, MaxNThreadsAllotment
+from raaml.ensembling.scheduling.allotment import NSGA2Allotment, FullFrequencyScalingAllotment, MaxNThreadsAllotment, MinThreadsAllotment
 from raaml.ensembling.scheduling.scheduler import LongestProcessingTimeScheduler, HighestWorkloadScheduler, HighestThreadCountScheduler
 from raaml.raaml import ResourceAwareAutoMLPipeline
 from raaml.util.idle_powers import get_idle_power
@@ -232,19 +232,25 @@ def run_allotment_experiment(
                     "htcs": HighestThreadCountScheduler
                 }
 
+                allotment_map ={
+                    "nsga2": NSGA2Allotment,
+                    "full":MaxNThreadsAllotment,
+                    "min": MinThreadsAllotment,
+                }
+
                 scheduler = scheduler_map[scheduler](max_n_cores, "energy", get_idle_power(False))
 
                 ensemble_pool = pipeline.load_ensemble_pool(ep_name)
-                
                 if ensemble_pool is not None:
                     ensemble_pool = ensemble_pool.copy()
                     ensemble_pool.ensembling_predictions = ensembling_predictions.copy()
                     with timeit(results_meta, name):
+                        allotment_method = allotment_map[allotment](max_n_cores)
                         pool_extended, old_ensemble_indices = ensemble_pool.extend_by_allotment(
-                            NSGA2Allotment(max_n_cores=max_n_cores) if allotment == "nsga2" else MaxNThreadsAllotment(max_n_cores=max_n_cores),
+                            allotment_method,
                             scheduler,
                             [
-                                FrequencyScalingFilter("max_fs"),
+                                FrequencyScalingFilter("boost"),
                                 NThreadsFilter(max_n_threads=max_n_cores),
                             ]
                         )
@@ -349,8 +355,11 @@ def run_ensembling_experiments(task_id, bmg_method, pipeline_dir, result_dir, se
             FrequencyScalingFilter("max_fs")
         ]
 
-        for time in list(time_values) + [-1]:
+        # for time in list(time_values) + [-1]:
+        for time in [-1]:
             if time == -1:
+                if bmg_method == "so-smac":
+                    overwrite=True
                 name = f"base_boost_single_{time}"
                 run_ensembling(
                     pipeline, result_dir, name, results_meta,
@@ -370,7 +379,8 @@ def run_ensembling_experiments(task_id, bmg_method, pipeline_dir, result_dir, se
             summary.set_progress(f"{seed}_{task_id}_{bmg_method}", get_progress(result_dir, n_total), print_progress=True)
             
             
-        for method in ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]:   
+        # for method in ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]:
+        for method in ["ges"]:   
             pruning_strategies = {
                 "top_50" : TopNFilter(n=50),
                 "nd_first_pareto": NonDominatedSortingFilter(max_pareto_rank=1),
@@ -467,15 +477,33 @@ def run_ensembling_experiments(task_id, bmg_method, pipeline_dir, result_dir, se
             "bmp": "base_28_single_-1",
             **({
                 f"{method}|nds": f"base_28_{method}_nd_50_silo" for method in 
-                ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]
+                # ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]
+                ["ges"]
             } if n_models_ensembling > 50 else {
                 f"{method}|nds": f"base_28_{method}_top_50" for method in
-                ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]
+                # ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]
+                ["ges"]
             })
         }   
         
-        allotment_sched_combinations = [("nsga2", "lpt"), ("nsga2", "hws"), ("nsga2", "htcs"), ("full", "lpt")]
-        n_cores_list = [2,4,8]
+        allotment_sched_combinations = [("nsga2", "lpt"), ("nsga2", "hws"), ("nsga2", "htcs"), ("full", "lpt"),("min","lpt")]
+        if bmg_method == "so-smac":
+            overwrite = True
+            n_cores_list = [2,4,8,16,32,64]
+            ensemble_pools = {
+            "bmp": "base_28_single_-1",
+            **({
+                f"{method}|nds": f"base_28_{method}_silo_top_50" for method in 
+                # ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]
+                ["ges"]
+            } if n_models_ensembling > 50 else {
+                f"{method}|nds": f"base_28_{method}_top_50" for method in
+                # ["ges", "mo-ges","qdo-es", "infer-qdo-es", "size-qdo-es", "energy-qdo-es"]
+                ["ges"]
+            })
+        }  
+        else:
+            n_cores_list = [2,4,8]
         
         n_total = len(allotment_sched_combinations) * len(ensemble_pools) * len(n_cores_list)
         
@@ -486,7 +514,7 @@ def run_ensembling_experiments(task_id, bmg_method, pipeline_dir, result_dir, se
                         allotment, pipeline, X_test, y_test,
                         result_dir, err_dir, bmg_method, f"parallel_allotment_{ep_short}_{allotment}_{scheduler}_{max_n_cores}",
                         ep_name, ensembling_predictions, results_meta,
-                        scheduler=scheduler, frequency_scaling=False, parallelism=True, max_n_cores=max_n_cores
+                        scheduler=scheduler, frequency_scaling=False, parallelism=True, max_n_cores=max_n_cores,overwrite=overwrite
                     )
                     summary.set_progress(f"{seed}_{task_id}_{bmg_method}", get_progress(result_dir, n_total), print_progress=True)
                 
@@ -595,7 +623,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output_dir",
         type=str,
-        default="./raaml_output_gbmlp",
+        default="/home/paessens/RAAML/raaml_output_gbmlp",
         help="Output directory for the AutoML pipeline. Default is 'raaml_output_gbmlp'."
     )
     parser.add_argument(
@@ -628,7 +656,7 @@ if __name__ == "__main__":
         default=None,
         help="Time restriction for the experiment in seconds."
     )
-
+    
     args = parser.parse_args()
     
     exp_id = int(args.exp_id)
@@ -654,6 +682,4 @@ if __name__ == "__main__":
                 task_id, method, args.output_dir, args.result_output_dir,
                 seed, args.exp_type, args.overwrite, args.time_restriction
             )
-    
-    
     

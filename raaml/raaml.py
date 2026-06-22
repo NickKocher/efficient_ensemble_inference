@@ -1475,7 +1475,7 @@ class ResourceAwareAutoMLPipeline():
             overwrite=self.overwrite,
             logging_level=self.logging_level,
             initial_design=RandomInitialDesign(scenario, n_configs = self.bmg_kwargs.get("n_configs_initial", 5)), 
-            callbacks=[CustomCallback(self.update_progress)],
+            # callbacks=[CustomCallback(self.update_progress)],
         )
 
         start = time_s()

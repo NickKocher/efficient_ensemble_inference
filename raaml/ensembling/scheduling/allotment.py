@@ -27,7 +27,8 @@ class AllotmentStrategy(ABC):
         tasks = []
         for config_id in config_ids:
             n_cores, frequency = allotment[config_id]
-            
+            if frequency == -1:
+                frequency = "boost"
             inf_time, energy = ensembling_predictions.get_resources(config_id, n_cores, frequency, ["inference_time", "energy_consumption"])
             tasks.append(Task(config_id, n_cores, frequency, inf_time, energy))
             
@@ -57,11 +58,25 @@ class MaxNThreadsAllotment(AllotmentStrategy):
         super().__init__(max_n_cores)
         
     def compute_allotments(self, ensembling_predictions : EnsemblingPredictions, scheduler : ListScheduler, config_ids : list):
-        max_frequency = np.max(ensembling_predictions.results["frequency"])
+        if "boost" in ensembling_predictions.results["frequency"].loc[0]:
+            max_frequency = "boost"
+        else:
+            max_frequency = np.max(ensembling_predictions.results["frequency"])
         
         return [{c_id : (self.max_n_cores, max_frequency) for c_id in config_ids}]
     
-    
+class MinThreadsAllotment(AllotmentStrategy):
+
+    def __init__(self, max_n_cores : int):
+        super().__init__(max_n_cores)
+        
+    def compute_allotments(self, ensembling_predictions : EnsemblingPredictions, scheduler : ListScheduler, config_ids : list):
+        if "boost" in ensembling_predictions.results["frequency"].loc[0]:
+            max_frequency = "boost"
+        else:
+            max_frequency = np.max(ensembling_predictions.results["frequency"])
+        
+        return [{c_id : (1, max_frequency) for c_id in config_ids}]     
 class FullFrequencyScalingAllotment(AllotmentStrategy):
     def __init__(self, max_n_cores : int):
         super().__init__(max_n_cores)
@@ -223,11 +238,13 @@ class NSGAIISchedulingProblem(Problem):
         self.config_ids = config_ids
         self.max_n_cores = max_n_cores
         self.nsga2_allotment = nsga2_allotment
-
-        min_freq, max_freq = (
-            self.ensembling_predictions.results["frequency"].astype(int).min(),
-            self.ensembling_predictions.results["frequency"].astype(int).max()
-        )
+        if "boost" in self.ensembling_predictions.results["frequency"].loc[0]: 
+            min_freq, max_freq = (-1,-1)
+        else:
+            min_freq, max_freq = (
+                self.ensembling_predictions.results["frequency"].astype(int).min(),
+                self.ensembling_predictions.results["frequency"].astype(int).max()
+            )
 
         xl = np.array([min_freq] * len(self.config_ids) + [1] * len(self.config_ids))
         xu = np.array([max_freq] * len(self.config_ids) + [self.max_n_cores] * len(self.config_ids))
@@ -250,7 +267,21 @@ class NSGAIISchedulingProblem(Problem):
 
         return dict(zip(config_ids, zip(end_vals, start_vals)))
 
-        
+    @staticmethod
+    def arr_to_final_allotment(x, config_ids):
+        if not isinstance(x, np.ndarray):
+            x = x.X
+
+        n = len(config_ids)
+
+        start_vals = x[:n].astype(object)
+
+        if start_vals[0] == -1:
+            start_vals[:] = "boost"
+
+        end_vals = x[n:2*n]
+
+        return dict(zip(config_ids, zip(end_vals, start_vals)))   
     def _evaluate(self, x, out, *args, **kwargs):
         out_arr = np.zeros((len(x), 2))
         for i, vec in enumerate(x):
@@ -266,7 +297,10 @@ class NSGA2SchedulingSampling(Sampling):
         super().__init__()
    
     def _do(self, problem, n_samples, **kwargs):
-        frequencies = problem.ensembling_predictions.results["frequency"].astype(int).unique()
+        if "boost" in problem.ensembling_predictions.results["frequency"].loc[0]: 
+             frequencies = np.array([-1])
+        else:
+            frequencies = problem.ensembling_predictions.results["frequency"].astype(int).unique()
         
         cores = np.ones((n_samples, problem.n_var // 2), dtype=int)
         frequencies = np.random.choice(frequencies, (n_samples, problem.n_var // 2))
@@ -302,21 +336,30 @@ class NSGA2SchedulingMutation(Mutation):
         freq_choices = problem.ensembling_predictions.results["frequency"].unique()
         freq_mask = np.random.rand(n_pop, n_configs) < prob
 
-        if freq_mask.any():
+        if len(freq_choices) > 1 and freq_mask.any():
             random_freqs = np.random.choice(freq_choices, size=freq_mask.sum())
             X_mut[:, :n_configs][freq_mask] = random_freqs
 
         core_mask = np.random.rand(n_pop, n_configs) < prob
         if core_mask.any():
             cur_cores = X[:, n_configs:][core_mask]
+
             core_add = np.random.choice([-1, 1], size=core_mask.sum())
-            X_mut[:, n_configs:][core_mask] = np.clip(cur_cores + core_add, 1, problem.max_n_cores)
-        
+
+            # multiply by 4 when stepping above 8
+            core_add *= np.where(cur_cores + core_add > 8, 4, 1)
+
+            X_mut[:, n_configs:][core_mask] = np.clip(
+                cur_cores + core_add,
+                1,
+                problem.max_n_cores
+            )
+            # X_mut[:, n_configs:][core_mask] = new_cores
         return X_mut
             
 
 class NSGA2Allotment(AllotmentStrategy):
-    def __init__(self, max_n_cores, n_iterations = 15):
+    def __init__(self, max_n_cores, n_iterations = 50):
         super().__init__(max_n_cores)
         self.n_iterations = n_iterations
 
@@ -324,7 +367,7 @@ class NSGA2Allotment(AllotmentStrategy):
         problem = NSGAIISchedulingProblem(ensembling_predictions, scheduler, self, self.max_n_cores, config_ids)
         
         algorithm = NSGA2(
-            pop_size=10,
+            pop_size=25,
             sampling=NSGA2SchedulingSampling(),
             crossover=NSGA2SchedulingCrossover(),
             mutation=NSGA2SchedulingMutation(),
@@ -337,6 +380,6 @@ class NSGA2Allotment(AllotmentStrategy):
             get_termination("n_gen", self.n_iterations)
         )
         
-        allotments = [NSGAIISchedulingProblem.arr_to_allotment(x, problem.config_ids) for x in res.opt]
+        allotments = [NSGAIISchedulingProblem.arr_to_final_allotment(x, problem.config_ids) for x in res.opt]
         
         return allotments
