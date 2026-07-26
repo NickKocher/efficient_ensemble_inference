@@ -12,3 +12,5 @@ ensemble_pool_results
 progress/
 .vscode
 .cache
+.env/
+analysis/data
