@@ -170,8 +170,10 @@ class InferenceTimeProvider(ContextManagerResourceProvider):
     def __exit__(self, exc_type, exc_value, traceback):
         self.resource_val = time.perf_counter() - self.time_start
 
-class AMDEnergyProvider(DummyResourceProvider):
-    pass
+class AMDEnergyProvider(ContextManagerResourceProvider):
+    def __init__(self, metric_name):
+        super().__init__(metric_name, 0.0, np.inf)
+        self.resource_val = 0.0
 # class AMDEnergyProvider(ContextManagerResourceProvider):
 #     def __init__(self, metric_name):
         
