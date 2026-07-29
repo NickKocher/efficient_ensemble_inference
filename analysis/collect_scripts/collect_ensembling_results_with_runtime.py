@@ -35,10 +35,12 @@ if __name__ == "__main__":
                     with open(os.path.join(dir, "meta_results.yaml"), "r") as f:
                         meta_results = yaml.safe_load(f)
 
-                    n_models_indicator = f"base_28_ges_nd_50_silo_time_{args.time}" if args.exp_type == "base_time" else "base_28_ges_nd_50_silo"
+                    n_models_indicator = f"base_boost_ges_nd_50_silo_time_{args.time}" if args.exp_type == "base_time" else "base_boost_ges_nd_50_silo"
                     more_than_50_models = n_models_indicator in meta_results
                     
                     for f in meta_results.keys():
+                        if not "base_boost" in f:
+                            continue
                         if not os.path.exists(os.path.join(dir, f"{f}.csv")):
                             continue
                         
@@ -109,14 +111,11 @@ if __name__ == "__main__":
     ensemble_pool_results = pd.concat(ensemble_pool_results)
     ensemble_pool_meta = pd.DataFrame(ensemble_pools_meta)
 
-    if args.exp_type == "base":
+    if args.exp_type == "base_with_inference":
         base_model_pool_results = pd.concat(base_model_pool_results)
         base_model_pool_meta = pd.DataFrame(base_model_pools_meta)
-        base_model_pool_results.to_csv("./test/collect/base_model_pools.csv", index=False)
-        ensemble_pool_results.to_csv("./test/collect/base_ensemble_pools.csv", index=False)
+        base_model_pool_results.to_csv("/home/kocher/RA-AML/analysis/data/base_with_inference/base_model_pools.csv", index=False)
+        ensemble_pool_results.to_csv("/home/kocher/RA-AML/analysis/data/base_with_inference/base_ensemble_pools.csv", index=False)
 
-        base_model_pool_meta.to_csv("./test/collect/base_model_pools_meta.csv", index=False)
-        ensemble_pool_meta.to_csv("./test/collect/base_ensemble_pools_meta.csv", index=False)
-    elif args.exp_type == "base_time":
-        ensemble_pool_results.to_csv(f"./test/collect/base_time_{args.time}_ensemble_pools.csv", index=False)
-        ensemble_pool_meta.to_csv(f"./test/collect/base_time_{args.time}_ensemble_pools_meta.csv", index=False)
+        base_model_pool_meta.to_csv("/home/kocher/RA-AML/analysis/data/base_with_inference/base_model_pools_meta.csv", index=False)
+        ensemble_pool_meta.to_csv("/home/kocher/RA-AML/analysis/data/base_with_inference/base_ensemble_pools_meta.csv", index=False)
