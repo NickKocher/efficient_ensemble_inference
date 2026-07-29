@@ -129,11 +129,11 @@ def compute_extremes(min_max_dict, all_dataframes):
 
 
 def get_all_dataframes():
-    base_model_pools = pd.read_csv("./data/base_model_pools.csv", index_col=0)
-    ensemble_pools = pd.read_csv("./data/base_ensemble_pools.csv", index_col=0)
-    fs_eps = pd.read_csv("./data/frequency_scaling_alloted_eps.csv", index_col=0)
-    parallel_eps = pd.read_csv("./data/parallel_alloted_eps.csv", index_col=0)
-    fs_parallel_eps = pd.read_csv("./data/frequency_scaling+parallel_alloted_eps.csv", index_col=0)
+    base_model_pools = pd.read_csv("/home/kocher/RA-AML/analysis/data/base_model_pools.csv", index_col=0)
+    ensemble_pools = pd.read_csv("/home/kocher/RA-AML/analysis/data/base_ensemble_pools.csv", index_col=0)
+    fs_eps = pd.read_csv("/home/kocher/RA-AML/analysis/data/frequency_scaling_alloted_eps.csv", index_col=0)
+    parallel_eps = pd.read_csv("/home/kocher/RA-AML/analysis/data/parallel_alloted_eps.csv", index_col=0)
+    fs_parallel_eps = pd.read_csv("/home/kocher/RA-AML/analysis/data/frequency_scaling+parallel_alloted_eps.csv", index_col=0)
 
     dataframes = [base_model_pools, ensemble_pools, fs_eps, parallel_eps, fs_parallel_eps]
 
@@ -190,5 +190,5 @@ def compute_ranks(data, mode, axis=1):
 
 
 def get_group_task_ids(name):
-    with open(f"./data/groups/{name}.yaml", "r") as f:
+    with open(f"/home/kocher/RA-AML/analysis/data/groups/{name}.yaml", "r") as f:
         return yaml.safe_load(f)

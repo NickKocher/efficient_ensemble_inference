@@ -80,6 +80,31 @@ def ensemble_to_task_list(ensemble_pool, ensemble_index, resources_pd):
         
     return task_list
 
+def extract_ensemble_inference_times(pool: SimpleEnsemblePool):
+    if pool is None:
+        return pd.DataFrame()
+
+    resource_usage = np.zeros((pool.weight_matrix.shape[1], len(pool.assembled_resource_provider)))
+    resource_names = pool.assembled_resource_provider.get_names()
+    inf_time_index = resource_names.index("inference_time")
+
+    for i, (config_id, n_cores, frequency) in enumerate(zip(pool.config_ids, pool.threads, pool.frequencies)):
+        preds = pool.final_results.get_predictions(config_id)
+        if preds is None:
+            pool.weight_matrix[:, i] = 0.0
+            continue
+        objectives = pool.final_results.get_objectives(config_id, n_cores, frequency, resource_names)
+        resource_usage[i] = objectives[resource_names]
+
+    res = pd.DataFrame(columns=["inference_times"])
+
+    for i in range(len(pool)):
+        weights = pool.weight_matrix[i]
+        active = np.abs(weights) >= 1e-12  # same "in-use" threshold as ensemble_to_task_list
+        inference_times = resource_usage[active, inf_time_index].tolist()
+        res.loc[i] = [inference_times]
+
+    return res
 
 def evaluate_ensemble_pool_ens_preds(pool : SimpleEnsemblePool, y_ens):
     if pool is None:
