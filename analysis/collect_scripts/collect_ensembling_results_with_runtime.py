@@ -16,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument("--time", type=int, default=3600, help="Time budget for the experiment")
     args = parser.parse_args()
 
-    base_folder = f"./ensemble_pool_results/{args.exp_type}/"
+    base_folder = f"/home/paessens/RAAML/ensemble_pool_results/{args.exp_type}/"
 
     base_model_pool_results = []
     ensemble_pool_results = []
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     ensemble_pools_meta = []
 
     pool_index = 0
-
+    counter = 0
     for task in tqdm.tqdm(tasks):
         for seed in range(1,6):
             for method in ["so-smac"]:
@@ -50,7 +50,12 @@ if __name__ == "__main__":
                         except:
                             df_ens = pd.DataFrame()
 
-                        assert len(df) == len(df_ens), "Length mismatch between pool results and ensemble results"
+                        if len(df) != len(df_ens):
+                            counter += 1
+                            print(f"Length mismatch between pool results and ensemble results for {f} in {dir} with {len(df)} vs {len(df_ens)}")
+                            continue
+                        assert len(df) == len(df_ens), f"Length mismatch between pool results and ensemble results for {f} in {dir} with {len(df)} vs {len(df_ens)}"
+                        
 
                         try:
                             df_inf = pd.read_csv(os.path.join(dir, f"{f}_inference_times.csv"), engine='pyarrow')
@@ -59,6 +64,12 @@ if __name__ == "__main__":
 
                         if not df_inf.empty:
                             assert len(df) == len(df_inf), "Length mismatch between pool results and inference times"
+                        else:
+                            counter += 1
+                            print(f"No inference times found for {f} in {dir}")
+
+                            continue
+
 
                         df["task_id"] = task
                         df["seed"] = seed
@@ -107,11 +118,13 @@ if __name__ == "__main__":
                 else:
                     print(f"Missing {dir}")
                     
-
+    if counter > 0:
+        print(f"Skipped {counter} pools due to length mismatch between pool and ensemble results.")
+        # exit(1)
     ensemble_pool_results = pd.concat(ensemble_pool_results)
     ensemble_pool_meta = pd.DataFrame(ensemble_pools_meta)
 
-    if args.exp_type == "base_with_inference":
+    if args.exp_type == "base":
         base_model_pool_results = pd.concat(base_model_pool_results)
         base_model_pool_meta = pd.DataFrame(base_model_pools_meta)
         base_model_pool_results.to_csv("/home/kocher/RA-AML/analysis/data/base_with_inference/base_model_pools.csv", index=False)
