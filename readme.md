@@ -1,5 +1,8 @@
 # Efficient Ensemble Inference
-
+## Paper
+For your convenience, the paper is available in Github:
+https://github.com/NickKocher/efficient_ensemble_inference/blob/automl26/Efficient_ensemble_inference-cr.pdf
+---
 This is the repository accompanying the code for the AutoML submission "Efficient Ensemble Inference". 
 
 --- 
